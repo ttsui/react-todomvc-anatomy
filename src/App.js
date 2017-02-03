@@ -3,13 +3,19 @@ import logo from './logo.svg';
 import './App.css';
 
 class TodoTextInput extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      value: ""
+      value: this.props.value
     };
     this._onInputChange = this._onInputChange.bind(this);
     this._onKeyPress = this._onKeyPress.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps) {
+      this.setState(nextProps);
+    }
   }
 
   render() {
@@ -43,32 +49,32 @@ TodoTextInput.defaultProps = {
 };
 
 class ListItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: this.props.value
-    };
-    this._onItemCompleted = this._onItemCompleted.bind(this);
-  }
-
   render() {
+
+    const todoText =
+          this.props.isCompleted
+            ? "DONE - " + this.props.value
+            : this.props.value;
     return (
       <div>
         <input type="checkbox"
-               value={this.state.isCompleted}
-               onChange={this._onItemCompleted} />
-        <input type="text" value={this.state.value} />
-        <button>X</button>
+               value={this.props.isCompleted}
+               onChange={() => this.props.onItemCompleted(this.props.id)} />
+        <TodoTextInput value={todoText } />
+        <button onChange={() => this.props.onItemDeleted(this.props.id)}>X</button>
       </div>
     );
   }
 
-  _onItemCompleted() {
-    this.setState({
-      isCompleted: true
-    });
-  }
+
 }
+ListItem.propTypes = {
+  id: React.PropTypes.number.isRequired,
+  isCompleted: React.PropTypes.bool.isRequired,
+  onItemCompleted: React.PropTypes.func.isRequired,
+  onItemDeleted: React.PropTypes.func.isRequired,
+  value: React.PropTypes.string
+};
 
 class App extends Component {
   constructor() {
@@ -81,6 +87,7 @@ class App extends Component {
     };
 
     this._onNewTodo = this._onNewTodo.bind(this);
+    this._onItemCompleted = this._onItemCompleted.bind(this);
   }
 
   render() {
@@ -94,9 +101,11 @@ class App extends Component {
         {
           this.state.todos.map(todo =>
             <ListItem key={todo.id}
+                      id={todo.id}
                       value={todo.text}
                       isCompleted={todo.isCompleted}
-                      onItemCompleted={() => {}} />
+                      onItemCompleted={this._onItemCompleted}
+                      onItemDeleted={() => {}} />
           )
         }
       </div>
@@ -108,6 +117,19 @@ class App extends Component {
       todos: this.state.todos.concat([
         { id: Date.now(), text: todoText, isCompleted: false }
       ])
+    });
+  }
+
+  _onItemCompleted(id) {
+    // const todoTodoToUpdate = this.state.todos.find(todo => todo.id === id);
+    // todoTodoToUpdate.isCompleted = !todoTodoToUpdate.isCompleted;
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (todo.id === id) {
+          todo.isCompleted = !todo.isCompleted;
+        }
+        return todo;
+      })
     });
   }
 }
