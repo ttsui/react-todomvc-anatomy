@@ -8,6 +8,7 @@ class TaskInput extends React.Component {
     this.state = {
       value: this.props.value
     };
+    this._onBlur = this._onBlur.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
     this._onKeyPress = this._onKeyPress.bind(this);
   }
@@ -23,9 +24,14 @@ class TaskInput extends React.Component {
       <input value={this.state.value}
              onChange={this._onInputChange}
              onKeyPress={this._onKeyPress}
+             onBlur={this._onBlur}
              placeholder="What needs to be done?"/>
     );
   }
+
+ _onBlur() {
+   this.props.onTaskEntered(this.state.value);
+ }
 
   _onInputChange(event) {
     this.setState({
