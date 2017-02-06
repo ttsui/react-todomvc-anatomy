@@ -35,20 +35,19 @@ class TodoTextInput extends React.Component {
 
   _onKeyPress(event) {
     if (event.key === "Enter") {
-      this.props.onNewTodo(this.state.value);
-      this.setState({ value: "" });
+      this.props.onTodoEntered(this.state.value);
     }
   }
 };
 TodoTextInput.propTypes = {
-  onNewTodo: React.PropTypes.func,
+  onTodoEntered: React.PropTypes.func,
   value: React.PropTypes.string
 }
 TodoTextInput.defaultProps = {
   value: ""
 };
 
-const TaskList = props => {
+const Task = props => {
   const todoText =
         props.isCompleted
           ? "DONE - " + props.value
@@ -58,14 +57,16 @@ const TaskList = props => {
       <input type="checkbox"
              value={props.isCompleted}
              onChange={() => props.onTaskCompleted(props.id)} />
-      <TodoTextInput value={todoText } />
+      <TodoTextInput value={todoText}
+                     onTodoEntered={text => props.onTaskChanged(props.id, text)} />
       <button onClick={() => props.onTaskDeleted(props.id)}>X</button>
     </div>
   );
 }
-TaskList.propTypes = {
+Task.propTypes = {
   id: React.PropTypes.number.isRequired,
   isCompleted: React.PropTypes.bool.isRequired,
+  onTaskChanged: React.PropTypes.func.isRequired,
   onTaskCompleted: React.PropTypes.func.isRequired,
   onTaskDeleted: React.PropTypes.func.isRequired,
   value: React.PropTypes.string
@@ -81,7 +82,8 @@ class App extends Component {
       ]
     };
 
-    this._onNewTodo = this._onNewTodo.bind(this);
+    this._onNewTask = this._onNewTask.bind(this);
+    this._onTaskChanged = this._onTaskChanged.bind(this);
     this._onTaskCompleted = this._onTaskCompleted.bind(this);
     this._onTaskDeleted = this._onTaskDeleted.bind(this);
   }
@@ -92,27 +94,39 @@ class App extends Component {
         <div className="App-header">
           <h2>todos</h2>
         </div>
-        <TodoTextInput onNewTodo={this._onNewTodo}
+        <TodoTextInput onTodoEntered={this._onNewTask}
                        value={this.state.newTodoText} />
         {
           this.state.todos.map(todo =>
-            <TaskList key={todo.id}
-                      id={todo.id}
-                      value={todo.text}
-                      isCompleted={todo.isCompleted}
-                      onTaskCompleted={this._onTaskCompleted}
-                      onTaskDeleted={this._onTaskDeleted} />
+            <Task key={todo.id}
+                  id={todo.id}
+                  value={todo.text}
+                  isCompleted={todo.isCompleted}
+                  onTaskChanged={this._onTaskChanged}
+                  onTaskCompleted={this._onTaskCompleted}
+                  onTaskDeleted={this._onTaskDeleted} />
           )
         }
       </div>
     );
   }
 
-  _onNewTodo(todoText) {
+  _onNewTask(todoText) {
     this.setState({
       todos: this.state.todos.concat([
         { id: Date.now(), text: todoText, isCompleted: false }
       ])
+    });
+  }
+
+  _onTaskChanged(id, text) {
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (todo.id === id) {
+          todo.text = text;
+        }
+        return todo;
+      })
     });
   }
 
