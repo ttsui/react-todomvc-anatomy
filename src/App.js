@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-class TodoTextInput extends React.Component {
+class TaskInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,20 +35,20 @@ class TodoTextInput extends React.Component {
 
   _onKeyPress(event) {
     if (event.key === "Enter") {
-      this.props.onTodoEntered(this.state.value);
+      this.props.onTaskEntered(this.state.value);
     }
   }
 };
-TodoTextInput.propTypes = {
-  onTodoEntered: React.PropTypes.func,
+TaskInput.propTypes = {
+  onTaskEntered: React.PropTypes.func,
   value: React.PropTypes.string
 }
-TodoTextInput.defaultProps = {
+TaskInput.defaultProps = {
   value: ""
 };
 
 const Task = props => {
-  const todoText =
+  const description =
         props.isCompleted
           ? "DONE - " + props.value
           : props.value;
@@ -57,8 +57,8 @@ const Task = props => {
       <input type="checkbox"
              value={props.isCompleted}
              onChange={() => props.onTaskCompleted(props.id)} />
-      <TodoTextInput value={todoText}
-                     onTodoEntered={text => props.onTaskChanged(props.id, text)} />
+      <TaskInput value={description}
+                     onTaskEntered={description => props.onTaskChanged(props.id, description)} />
       <button onClick={() => props.onTaskDeleted(props.id)}>X</button>
     </div>
   );
@@ -76,9 +76,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      newTodoText: "",
-      todos: [
-        { id: 1, text: "Buy Milk", isCompleted: false }
+      tasks: [
+        { id: 1, description: "Buy Milk", isCompleted: false }
       ]
     };
 
@@ -92,16 +91,16 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <h2>todos</h2>
+          <h2>tasks</h2>
         </div>
-        <TodoTextInput onTodoEntered={this._onNewTask}
-                       value={this.state.newTodoText} />
+        <TaskInput onTaskEntered={this._onNewTask}
+                   value="" />
         {
-          this.state.todos.map(todo =>
-            <Task key={todo.id}
-                  id={todo.id}
-                  value={todo.text}
-                  isCompleted={todo.isCompleted}
+          this.state.tasks.map(task =>
+            <Task key={task.id}
+                  id={task.id}
+                  value={task.description}
+                  isCompleted={task.isCompleted}
                   onTaskChanged={this._onTaskChanged}
                   onTaskCompleted={this._onTaskCompleted}
                   onTaskDeleted={this._onTaskDeleted} />
@@ -111,39 +110,39 @@ class App extends Component {
     );
   }
 
-  _onNewTask(todoText) {
+  _onNewTask(description) {
     this.setState({
-      todos: this.state.todos.concat([
-        { id: Date.now(), text: todoText, isCompleted: false }
+      tasks: this.state.tasks.concat([
+        { id: Date.now(), description, isCompleted: false }
       ])
     });
   }
 
-  _onTaskChanged(id, text) {
+  _onTaskChanged(id, description) {
     this.setState({
-      todos: this.state.todos.map(todo => {
-        if (todo.id === id) {
-          todo.text = text;
+      tasks: this.state.tasks.map(task => {
+        if (task.id === id) {
+          task.description = description;
         }
-        return todo;
+        return task;
       })
     });
   }
 
   _onTaskCompleted(id) {
     this.setState({
-      todos: this.state.todos.map(todo => {
-        if (todo.id === id) {
-          todo.isCompleted = !todo.isCompleted;
+      tasks: this.state.tasks.map(task => {
+        if (task.id === id) {
+          task.isCompleted = !task.isCompleted;
         }
-        return todo;
+        return task;
       })
     });
   }
 
   _onTaskDeleted(id) {
     this.setState({
-      todos: this.state.todos.filter(todo => todo.id !== id)
+      tasks: this.state.tasks.filter(task => task.id !== id)
     });
 
   }
