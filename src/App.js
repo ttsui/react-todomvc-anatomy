@@ -48,7 +48,7 @@ TodoTextInput.defaultProps = {
   value: ""
 };
 
-const ListItem = props => {
+const TaskList = props => {
   const todoText =
         props.isCompleted
           ? "DONE - " + props.value
@@ -57,17 +57,17 @@ const ListItem = props => {
     <div>
       <input type="checkbox"
              value={props.isCompleted}
-             onChange={() => props.onItemCompleted(props.id)} />
+             onChange={() => props.onTaskCompleted(props.id)} />
       <TodoTextInput value={todoText } />
-      <button onClick={() => props.onItemDeleted(props.id)}>X</button>
+      <button onClick={() => props.onTaskDeleted(props.id)}>X</button>
     </div>
   );
 }
-ListItem.propTypes = {
+TaskList.propTypes = {
   id: React.PropTypes.number.isRequired,
   isCompleted: React.PropTypes.bool.isRequired,
-  onItemCompleted: React.PropTypes.func.isRequired,
-  onItemDeleted: React.PropTypes.func.isRequired,
+  onTaskCompleted: React.PropTypes.func.isRequired,
+  onTaskDeleted: React.PropTypes.func.isRequired,
   value: React.PropTypes.string
 };
 
@@ -82,8 +82,8 @@ class App extends Component {
     };
 
     this._onNewTodo = this._onNewTodo.bind(this);
-    this._onItemCompleted = this._onItemCompleted.bind(this);
-    this._onItemDeleted = this._onItemDeleted.bind(this);
+    this._onTaskCompleted = this._onTaskCompleted.bind(this);
+    this._onTaskDeleted = this._onTaskDeleted.bind(this);
   }
 
   render() {
@@ -96,12 +96,12 @@ class App extends Component {
                        value={this.state.newTodoText} />
         {
           this.state.todos.map(todo =>
-            <ListItem key={todo.id}
+            <TaskList key={todo.id}
                       id={todo.id}
                       value={todo.text}
                       isCompleted={todo.isCompleted}
-                      onItemCompleted={this._onItemCompleted}
-                      onItemDeleted={this._onItemDeleted} />
+                      onTaskCompleted={this._onTaskCompleted}
+                      onTaskDeleted={this._onTaskDeleted} />
           )
         }
       </div>
@@ -116,7 +116,7 @@ class App extends Component {
     });
   }
 
-  _onItemCompleted(id) {
+  _onTaskCompleted(id) {
     this.setState({
       todos: this.state.todos.map(todo => {
         if (todo.id === id) {
@@ -127,7 +127,7 @@ class App extends Component {
     });
   }
 
-  _onItemDeleted(id) {
+  _onTaskDeleted(id) {
     this.setState({
       todos: this.state.todos.filter(todo => todo.id !== id)
     });
