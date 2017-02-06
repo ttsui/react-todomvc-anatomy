@@ -121,8 +121,6 @@ class App extends Component {
   }
 
   _onItemCompleted(id) {
-    // const todoTodoToUpdate = this.state.todos.find(todo => todo.id === id);
-    // todoTodoToUpdate.isCompleted = !todoTodoToUpdate.isCompleted;
     this.setState({
       todos: this.state.todos.map(todo => {
         if (todo.id === id) {
