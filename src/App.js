@@ -61,7 +61,7 @@ class ListItem extends React.Component {
                value={this.props.isCompleted}
                onChange={() => this.props.onItemCompleted(this.props.id)} />
         <TodoTextInput value={todoText } />
-        <button onChange={() => this.props.onItemDeleted(this.props.id)}>X</button>
+        <button onClick={() => this.props.onItemDeleted(this.props.id)}>X</button>
       </div>
     );
   }
@@ -88,6 +88,7 @@ class App extends Component {
 
     this._onNewTodo = this._onNewTodo.bind(this);
     this._onItemCompleted = this._onItemCompleted.bind(this);
+    this._onItemDeleted = this._onItemDeleted.bind(this);
   }
 
   render() {
@@ -105,7 +106,7 @@ class App extends Component {
                       value={todo.text}
                       isCompleted={todo.isCompleted}
                       onItemCompleted={this._onItemCompleted}
-                      onItemDeleted={() => {}} />
+                      onItemDeleted={this._onItemDeleted} />
           )
         }
       </div>
@@ -129,6 +130,13 @@ class App extends Component {
         return todo;
       })
     });
+  }
+
+  _onItemDeleted(id) {
+    this.setState({
+      todos: this.state.todos.filter(todo => todo.id !== id)
+    });
+
   }
 }
 
