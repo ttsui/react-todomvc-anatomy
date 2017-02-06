@@ -48,25 +48,20 @@ TodoTextInput.defaultProps = {
   value: ""
 };
 
-class ListItem extends React.Component {
-  render() {
-
-    const todoText =
-          this.props.isCompleted
-            ? "DONE - " + this.props.value
-            : this.props.value;
-    return (
-      <div>
-        <input type="checkbox"
-               value={this.props.isCompleted}
-               onChange={() => this.props.onItemCompleted(this.props.id)} />
-        <TodoTextInput value={todoText } />
-        <button onClick={() => this.props.onItemDeleted(this.props.id)}>X</button>
-      </div>
-    );
-  }
-
-
+const ListItem = props => {
+  const todoText =
+        props.isCompleted
+          ? "DONE - " + props.value
+          : props.value;
+  return (
+    <div>
+      <input type="checkbox"
+             value={props.isCompleted}
+             onChange={() => props.onItemCompleted(props.id)} />
+      <TodoTextInput value={todoText } />
+      <button onClick={() => props.onItemDeleted(props.id)}>X</button>
+    </div>
+  );
 }
 ListItem.propTypes = {
   id: React.PropTypes.number.isRequired,
