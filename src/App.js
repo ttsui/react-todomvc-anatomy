@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import './base.css';
+import './index.css';
 import './App.css';
 
 class TaskInput extends React.Component {
@@ -97,11 +99,17 @@ const TaskFilters = props => {
   }
 
   return (
-    <div>
-      <button onClick={ onFilterButtonClick(FILTER_TYPE.ALL) }>All</button>
-      <button onClick={ onFilterButtonClick(FILTER_TYPE.ACTIVE) }>Active</button>
-      <button onClick={ onFilterButtonClick(FILTER_TYPE.COMPLETED) }>Completed</button>
-    </div>
+    <ul className="filters">
+      <li>
+        <a href="# "onClick={ onFilterButtonClick(FILTER_TYPE.ALL) }>All</a>
+      </li>
+      <li>
+        <a href="#" onClick={ onFilterButtonClick(FILTER_TYPE.ACTIVE) }>Active</a>
+      </li>
+      <li>
+        <a href="#" onClick={ onFilterButtonClick(FILTER_TYPE.COMPLETED) }>Completed</a>
+      </li>
+    </ul>
   );
 }
 TaskFilters.propTypes = {
