@@ -93,21 +93,41 @@ const FILTER_TYPE = {
   ACTIVE: "ACTIVE",
   COMPLETED: "COMPLETED"
 };
+const Filter = props => {
+  return (
+    <a href="#"
+       onClick={ () => props.onClick(props.type) }
+       className={ props.value === props.type ? "selected" : "" }>
+       { props.children }
+    </a>
+  );
+};
+Filter.propTypes = {
+  onClick: React.PropTypes.func,
+  type: React.PropTypes.string.isRequired,
+  value: React.PropTypes.string
+}
 const TaskFilters = props => {
-  function onFilterButtonClick(filterType) {
-    return () => props.onFilterChanged(filterType);
+  function onFilterClick(filterType) {
+    props.onFilterChanged(filterType);
   }
 
   return (
     <ul className="filters">
       <li>
-        <a href="# "onClick={ onFilterButtonClick(FILTER_TYPE.ALL) }>All</a>
+        <Filter type={ FILTER_TYPE.ALL }
+                value={ props.value }
+                onClick={ onFilterClick }>All</Filter>
       </li>
       <li>
-        <a href="#" onClick={ onFilterButtonClick(FILTER_TYPE.ACTIVE) }>Active</a>
+        <Filter type={ FILTER_TYPE.ACTIVE }
+                value={ props.value }
+                onClick={ onFilterClick }>Active</Filter>
       </li>
       <li>
-        <a href="#" onClick={ onFilterButtonClick(FILTER_TYPE.COMPLETED) }>Completed</a>
+        <Filter type={ FILTER_TYPE.COMPLETED }
+                value={ props.value }
+                onClick={ onFilterClick }>Completed</Filter>
       </li>
     </ul>
   );
@@ -116,11 +136,6 @@ TaskFilters.propTypes = {
   onFilterChanged: React.PropTypes.func.isRequired,
   value: React.PropTypes.string.isRequired
 };
-function isSelectedStyle(filterType, value) {
-  if (filterType === value) {
-    return "color: blue";
-  }
-}
 
 class App extends Component {
   constructor() {
