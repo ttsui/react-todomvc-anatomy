@@ -78,15 +78,46 @@ Task.propTypes = {
   value: React.PropTypes.string
 };
 
+const FILTER_TYPE = {
+  ALL: "ALL",
+  ACTIVE: "ACTIVE",
+  COMPLETED: "COMPLETED"
+};
+const TaskFilters = props => {
+  function onFilterButtonClick(filterType) {
+    return () => props.onFilterChanged(filterType);
+  }
+
+  return (
+    <div>
+      <button onClick={ onFilterButtonClick(FILTER_TYPE.ALL) }>All</button>
+      <button onClick={ onFilterButtonClick(FILTER_TYPE.ACTIVE) }>Active</button>
+      <button onClick={ onFilterButtonClick(FILTER_TYPE.COMPLETED) }>Completed</button>
+    </div>
+  );
+}
+TaskFilters.propTypes = {
+  onFilterChanged: React.PropTypes.func.isRequired,
+  value: React.PropTypes.string.isRequired
+};
+function isSelectedStyle(filterType, value) {
+  if (filterType === value) {
+    return "color: blue";
+  }
+}
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
+      filter: FILTER_TYPE.ALL,
       tasks: [
         { id: 1, description: "Buy Milk", isCompleted: false }
       ]
     };
 
+    this._byFilterType = this._byFilterType.bind(this);
+    this._onFilterChanged = this._onFilterChanged.bind(this);
     this._onNewTask = this._onNewTask.bind(this);
     this._onTaskChanged = this._onTaskChanged.bind(this);
     this._onTaskCompleted = this._onTaskCompleted.bind(this);
@@ -102,18 +133,41 @@ class App extends Component {
         <TaskInput onTaskEntered={this._onNewTask}
                    value="" />
         {
-          this.state.tasks.map(task =>
-            <Task key={task.id}
-                  id={task.id}
-                  value={task.description}
-                  isCompleted={task.isCompleted}
-                  onTaskChanged={this._onTaskChanged}
-                  onTaskCompleted={this._onTaskCompleted}
-                  onTaskDeleted={this._onTaskDeleted} />
-          )
+          this.state.tasks
+            .filter(this._byFilterType)
+            .map(task =>
+              <Task key={task.id}
+                    id={task.id}
+                    value={task.description}
+                    isCompleted={task.isCompleted}
+                    onTaskChanged={this._onTaskChanged}
+                    onTaskCompleted={this._onTaskCompleted}
+                    onTaskDeleted={this._onTaskDeleted} />
+            )
         }
+        <TaskFilters onFilterChanged={ this._onFilterChanged }
+                     value={ this.state.filter }/>
       </div>
     );
+  }
+
+  _byFilterType(task) {
+    switch (this.state.filter) {
+      case FILTER_TYPE.ALL:
+        return true;
+      case FILTER_TYPE.ACTIVE:
+        return task.isCompleted === false;
+      case FILTER_TYPE.COMPLETED:
+        return task.isCompleted === true;
+      default:
+        return true;
+    }
+  }
+
+  _onFilterChanged(filter) {
+    this.setState({
+      filter
+    });
   }
 
   _onNewTask(description) {
