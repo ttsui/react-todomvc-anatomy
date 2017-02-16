@@ -30,7 +30,7 @@ class TaskInput extends React.Component {
   }
 
  _onBlur() {
-   this.props.onTaskEntered(this.state.value);
+   this._triggerTaskEntered();
  }
 
   _onInputChange(event) {
@@ -41,8 +41,16 @@ class TaskInput extends React.Component {
 
   _onKeyPress(event) {
     if (event.key === "Enter") {
-      this.props.onTaskEntered(this.state.value);
+      this._triggerTaskEntered();
     }
+  }
+
+  _triggerTaskEntered() {
+   if (this.state.value.trim().length === 0) {
+     return;
+   }
+
+   this.props.onTaskEntered(this.state.value);
   }
 };
 TaskInput.propTypes = {
