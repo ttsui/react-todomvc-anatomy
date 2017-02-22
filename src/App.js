@@ -23,11 +23,12 @@ class TaskInput extends React.Component {
 
   render() {
     return (
-      <input value={this.state.value}
+      <input className={ this.props.className }
              onChange={this._onInputChange}
              onKeyPress={this._onKeyPress}
              onBlur={this._onBlur}
-             placeholder="What needs to be done?"/>
+             placeholder="What needs to be done?"
+             value={this.state.value} />
     );
   }
 
@@ -56,6 +57,7 @@ class TaskInput extends React.Component {
   }
 };
 TaskInput.propTypes = {
+  className: React.PropTypes.string,
   onTaskEntered: React.PropTypes.func,
   value: React.PropTypes.string
 }
@@ -70,12 +72,15 @@ const Task = props => {
           : props.value;
   return (
     <div>
-      <input type="checkbox"
-             value={props.isCompleted}
-             onChange={() => props.onTaskCompleted(props.id)} />
+      <input className="toggle"
+             onChange={() => props.onTaskCompleted(props.id)}
+             type="checkbox"
+             value={props.isCompleted} />
       <TaskInput value={description}
-                     onTaskEntered={description => props.onTaskChanged(props.id, description)} />
-      <button onClick={() => props.onTaskDeleted(props.id)}>X</button>
+                 onTaskEntered={description => props.onTaskChanged(props.id, description)}
+                 className="" />
+      <button className="destroy"
+              onClick={() => props.onTaskDeleted(props.id)}>X</button>
     </div>
   );
 }
@@ -157,28 +162,36 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>tasks</h2>
-        </div>
-        <TaskInput onTaskEntered={this._onNewTask}
-                   value="" />
-        {
-          this.state.tasks
-            .filter(this._byFilterType)
-            .map(task =>
-              <Task key={task.id}
-                    id={task.id}
-                    value={task.description}
-                    isCompleted={task.isCompleted}
-                    onTaskChanged={this._onTaskChanged}
-                    onTaskCompleted={this._onTaskCompleted}
-                    onTaskDeleted={this._onTaskDeleted} />
-            )
-        }
-        <TaskFilters onFilterChanged={ this._onFilterChanged }
-                     value={ this.state.filter }/>
-      </div>
+      <section className="todoapp">
+        <header className="header">
+          <h1>todos</h1>
+          <TaskInput onTaskEntered={this._onNewTask}
+                     value=""
+                     className="new-todo" />
+        </header>
+        <section className="main" style={{ display: "block" }} >
+          <ul className="todo-list">
+            {
+              this.state.tasks
+                .filter(this._byFilterType)
+                .map(task =>
+                  <li key={task.id}>
+                    <Task id={task.id}
+                          value={task.description}
+                          isCompleted={task.isCompleted}
+                          onTaskChanged={this._onTaskChanged}
+                          onTaskCompleted={this._onTaskCompleted}
+                          onTaskDeleted={this._onTaskDeleted} />
+                  </li>
+                )
+            }
+          </ul>
+        </section>
+        <footer className="footer">
+          <TaskFilters onFilterChanged={ this._onFilterChanged }
+                       value={ this.state.filter }/>
+        </footer>
+      </section>
     );
   }
 
