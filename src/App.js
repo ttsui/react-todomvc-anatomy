@@ -91,7 +91,7 @@ class Task extends React.Component {
         <input className="toggle"
                onChange={() => this.props.onTaskCompleted(this.props.id)}
                type="checkbox"
-               value={ this.props.isCompleted } />
+               checked={ this.props.isCompleted } />
         {
           this.state.isEditing
             ? <TaskInput value={ this.props.value }
