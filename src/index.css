@@ -158,20 +158,16 @@ label[for='toggle-all'] {
 	border-bottom: none;
 }
 
-.todo-list li.editing {
+.todo-list li div.editing {
 	border-bottom: none;
 	padding: 0;
 }
 
-.todo-list li.editing .edit {
+.todo-list li div.editing .edit {
 	display: block;
 	width: 506px;
 	padding: 13px 17px 12px 17px;
 	margin: 0 0 0 43px;
-}
-
-.todo-list li.editing .view {
-	display: none;
 }
 
 .todo-list li .toggle {
@@ -236,10 +232,6 @@ label[for='toggle-all'] {
 
 .todo-list li:hover .destroy {
 	display: block;
-}
-
-.todo-list li .edit {
-	display: none;
 }
 
 .todo-list li.editing:last-child {

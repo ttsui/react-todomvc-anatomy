@@ -65,24 +65,46 @@ TaskInput.defaultProps = {
   value: ""
 };
 
-const Task = props => {
-  const description =
-        props.isCompleted
-          ? "DONE - " + props.value
-          : props.value;
-  return (
-    <div>
-      <input className="toggle"
-             onChange={() => props.onTaskCompleted(props.id)}
-             type="checkbox"
-             value={props.isCompleted} />
-      <TaskInput value={description}
-                 onTaskEntered={description => props.onTaskChanged(props.id, description)}
-                 className="" />
-      <button className="destroy"
-              onClick={() => props.onTaskDeleted(props.id)}>X</button>
-    </div>
-  );
+class Task extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        isEditing: false
+    };
+
+    this._onLabelClick = this._onLabelClick.bind(this);
+    this._onTaskChanged = this._onTaskChanged.bind(this);
+  }
+
+  render() {
+    return (
+      <div className={ this.state.isEditing ? "editing" : "" }>
+        <input className="toggle"
+               onChange={() => this.props.onTaskCompleted(this.props.id)}
+               type="checkbox"
+               value={ this.props.isCompleted } />
+        {
+          this.state.isEditing
+            ? <TaskInput value={ this.props.value }
+                         onTaskEntered={ this._onTaskChanged }
+                         className="edit" />
+            : <label onDoubleClick={ this._onLabelClick }>{ this.props.value }</label>
+        }
+        <button className="destroy"
+                onClick={() => this.props.onTaskDeleted(this.props.id)} />
+      </div>
+    );
+  }
+
+  _onLabelClick(event) {
+    console.log("_onLabelClick() called.")
+    this.setState({ isEditing: true });
+  }
+
+  _onTaskChanged(description) {
+    this.props.onTaskChanged(this.props.id, description);
+    this.setState({ isEditing: false });
+  }
 }
 Task.propTypes = {
   id: React.PropTypes.number.isRequired,
@@ -175,7 +197,8 @@ class App extends Component {
               this.state.tasks
                 .filter(this._byFilterType)
                 .map(task =>
-                  <li key={task.id}>
+                  <li key={task.id}
+                      className={ task.isCompleted ? "completed" : "" }>
                     <Task id={task.id}
                           value={task.description}
                           isCompleted={task.isCompleted}
