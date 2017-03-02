@@ -21,6 +21,12 @@ class TaskInput extends React.Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.focusInput) {
+      this._textInput.focus();
+    }
+  }
+
   render() {
     return (
       <input className={ this.props.className }
@@ -28,6 +34,7 @@ class TaskInput extends React.Component {
              onKeyPress={this._onKeyPress}
              onBlur={this._onBlur}
              placeholder="What needs to be done?"
+             ref={ input => { this._textInput = input; } }
              value={this.state.value} />
     );
   }
@@ -58,10 +65,12 @@ class TaskInput extends React.Component {
 };
 TaskInput.propTypes = {
   className: React.PropTypes.string,
+  focusInput: React.PropTypes.bool,
   onTaskEntered: React.PropTypes.func,
   value: React.PropTypes.string
 }
 TaskInput.defaultProps = {
+  focusInput: false,
   value: ""
 };
 
@@ -87,7 +96,8 @@ class Task extends React.Component {
           this.state.isEditing
             ? <TaskInput value={ this.props.value }
                          onTaskEntered={ this._onTaskChanged }
-                         className="edit" />
+                         className="edit"
+                         focusInput={true} />
             : <label onDoubleClick={ this._onLabelClick }>{ this.props.value }</label>
         }
         <button className="destroy"
