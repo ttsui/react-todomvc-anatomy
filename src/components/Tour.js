@@ -10,27 +10,35 @@ import FilterCode from "!raw-loader!./Filter.js";
 import "react-joyride/lib/react-joyride-compiled.css";
 
 const tourSteps = [{
-    title: "Add new task component",
-    text: <AnatomyCard code={ TaskInputCode }>This is the TaskInput component</AnatomyCard>,
+    title: "<TaskInput />",
+    text: <AnatomyCard code={ TaskInputCode }>
+            Users enter new tasks with the TaskInput component.
+          </AnatomyCard>,
     selector: ".new-todo",
     position: "top",
     type: "click"
   }, {
-    title: "Existing task component",
-    text: <AnatomyCard code={ TaskCode }>This is the Task component</AnatomyCard>,
+    title: "<Task />",
+    text: <AnatomyCard code={ TaskCode }>
+            Existing tasks are rendered with the Task component.
+          </AnatomyCard>,
     selector: ".task-0",
     position: "right",
     type: "click"
 
   }, {
-    title: "Filters component",
-    text: <AnatomyCard code={ TaskFiltersCode }>This is the TaskFilters component</AnatomyCard>,
+    title: "<TaskFilters />",
+    text: <AnatomyCard code={ TaskFiltersCode }>
+            The TaskFilters component contains all the filters.
+          </AnatomyCard>,
     selector: ".filters",
     position: "left",
     type: "click"
   }, {
-    title: "A filter component",
-    text: <AnatomyCard code={ FilterCode }>This is the Filter component</AnatomyCard>,
+    title: "<Filter />",
+    text: <AnatomyCard code={ FilterCode }>
+            This is the Filter component.
+          </AnatomyCard>,
     selector: ".active-filter",
     position: "bottom",
     type: "click"

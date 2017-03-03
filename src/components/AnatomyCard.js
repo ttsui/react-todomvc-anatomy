@@ -26,9 +26,14 @@ class AnatomyCard extends React.Component {
     return (
       <div>
         { this.props.children }
+        <br/>
         <a href="#"
            onClick={ () => this.refs.modal.show() }
-           style={{ float: "right"}} >Show code</a>
+           style={{
+             paddingTop: "0.5em",
+             display: "inline-block"
+           }} >Show code</a>
+
         <Modal ref="modal"
                backdrop={ false }
                modalStyle={{ width: "145%" }}
