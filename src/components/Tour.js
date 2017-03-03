@@ -38,9 +38,9 @@ const tourSteps = [{
 ];
 
 const Tour = props => (
-        <Joyride run={ true }
-                 steps={ tourSteps }
-                 type="continuous" />
+  <Joyride run={ true }
+           steps={ tourSteps }
+           type="continuous" />
 );
 
 export default Tour
