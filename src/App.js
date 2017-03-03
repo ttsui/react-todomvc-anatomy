@@ -1,6 +1,12 @@
+/* eslint-disable import/no-webpack-loader-syntax */
+
 import React, { Component } from 'react';
 import Joyride from "react-joyride";
 import Box from "react-layout-components";
+import Filter from "./filter";
+import FilterCode from '!raw-loader!./filter.js';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/styles';
 import "react-joyride/lib/react-joyride-compiled.css";
 import './base.css';
 import './index.css';
@@ -136,20 +142,6 @@ const FILTER_TYPE = {
   ACTIVE: "ACTIVE",
   COMPLETED: "COMPLETED"
 };
-const Filter = props => {
-  return (
-    <a href="#"
-       onClick={ () => props.onClick(props.type) }
-       className={ props.value === props.type ? "selected" : "" }>
-       { props.children }
-    </a>
-  );
-};
-Filter.propTypes = {
-  onClick: React.PropTypes.func,
-  type: React.PropTypes.string.isRequired,
-  value: React.PropTypes.string
-}
 const TaskFilters = props => {
   function onFilterClick(filterType) {
     props.onFilterChanged(filterType);
@@ -201,7 +193,7 @@ const tourSteps = [{
     type: 'hover'
   }, {
     title: 'A filter component',
-    text: 'This is a Filter component',
+    text: <SyntaxHighlighter language='javascript' style={docco}>{FilterCode}</SyntaxHighlighter>,  
     selector: '.active-filter',
     position: 'bottom',
     type: 'hover'
