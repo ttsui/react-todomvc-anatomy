@@ -3,6 +3,6 @@ Graphically show anatomy of React implementation of TodoMVC Edit
 
 [![Example image](https://raw.githubusercontent.com/ttsui/react-todomvc-anatomy/master/screenshot.png)
 
-## Run Example
+## Run 
     $ npm install
     $ npm run start
