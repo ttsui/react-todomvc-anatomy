@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import Box from "react-layout-components";
 import TaskInput from "./TaskInput";
 import Task from "./Task";
 import TaskFilters, { FILTER_TYPE } from "./TaskFilters";
 import Tour from "./Tour";
 
-import '../styles/base.css';
-import '../styles/index.css';
-import '../styles/App.css';
+import "../styles/base.css";
+import "../styles/index.css";
+import "../styles/App.css";
 
 class App extends Component {
   constructor() {
