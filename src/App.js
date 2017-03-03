@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Joyride from "react-joyride";
+import Box from "react-layout-components";
+import "react-joyride/lib/react-joyride-compiled.css";
 import './base.css';
 import './index.css';
 import './App.css';
@@ -194,37 +196,50 @@ class App extends Component {
 
   render() {
     return (
-      <section className="todoapp">
-        <header className="header">
-          <h1>todos</h1>
-          <TaskInput onTaskEntered={this._onNewTask}
-                     value=""
-                     className="new-todo" />
-        </header>
-        <section className="main" style={{ display: "block" }} >
-          <ul className="todo-list">
-            {
-              this.state.tasks
-                .filter(this._byFilterType)
-                .map(task =>
-                  <li key={task.id}
-                      className={ task.isCompleted ? "completed" : "" }>
-                    <Task id={task.id}
-                          value={task.description}
-                          isCompleted={task.isCompleted}
-                          onTaskChanged={this._onTaskChanged}
-                          onTaskCompleted={this._onTaskCompleted}
-                          onTaskDeleted={this._onTaskDeleted} />
-                  </li>
-                )
-            }
-          </ul>
-        </section>
-        <footer className="footer">
-          <TaskFilters onFilterChanged={ this._onFilterChanged }
-                       value={ this.state.filter }/>
-        </footer>
-      </section>
+      <Box center>
+        <Box minWidth={ 230 } maxWidth={ 550 } flexGrow={ 1 } >
+          <section className="todoapp">
+            <header className="header">
+              <h1 style={{}}>todos</h1>
+              <TaskInput onTaskEntered={this._onNewTask}
+                         value=""
+                         className="new-todo" />
+            <Joyride run={ true }
+                     steps={[{
+                       title: 'Trigger Action',
+                       text: 'This is the TaskInput component',
+                       selector: '.new-todo',
+                       position: 'top',
+                       type: 'hover',
+                     }]}
+            />
+            </header>
+            <section className="main" style={{ display: "block" }} >
+              <ul className="todo-list">
+                {
+                  this.state.tasks
+                    .filter(this._byFilterType)
+                    .map(task =>
+                      <li key={task.id}
+                          className={ task.isCompleted ? "completed" : "" }>
+                        <Task id={task.id}
+                              value={task.description}
+                              isCompleted={task.isCompleted}
+                              onTaskChanged={this._onTaskChanged}
+                              onTaskCompleted={this._onTaskCompleted}
+                              onTaskDeleted={this._onTaskDeleted} />
+                      </li>
+                    )
+                }
+              </ul>
+            </section>
+            <footer className="footer">
+              <TaskFilters onFilterChanged={ this._onFilterChanged }
+                           value={ this.state.filter }/>
+            </footer>
+          </section>
+        </Box>
+      </Box>
     );
   }
 
