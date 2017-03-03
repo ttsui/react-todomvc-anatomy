@@ -5,9 +5,9 @@ import Task from "./Task";
 import TaskFilters, { FILTER_TYPE } from "./TaskFilters";
 import Tour from "./Tour";
 
-import './base.css';
-import './index.css';
-import './App.css';
+import '../styles/base.css';
+import '../styles/index.css';
+import '../styles/App.css';
 
 class App extends Component {
   constructor() {
