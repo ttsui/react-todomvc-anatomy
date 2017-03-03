@@ -89,7 +89,7 @@ class Task extends React.Component {
 
   render() {
     return (
-      <div className={ this.state.isEditing ? "editing" : "" }>
+      <div className={ this.props.className + (this.state.isEditing ? "editing" : "") }>
         <input className="toggle"
                onChange={() => this.props.onTaskCompleted(this.props.id)}
                type="checkbox"
@@ -119,12 +119,16 @@ class Task extends React.Component {
   }
 }
 Task.propTypes = {
+  className: React.PropTypes.string,
   id: React.PropTypes.number.isRequired,
   isCompleted: React.PropTypes.bool.isRequired,
   onTaskChanged: React.PropTypes.func.isRequired,
   onTaskCompleted: React.PropTypes.func.isRequired,
   onTaskDeleted: React.PropTypes.func.isRequired,
   value: React.PropTypes.string
+};
+Task.defaultProps = {
+  className: ""
 };
 
 const FILTER_TYPE = {
@@ -158,7 +162,7 @@ const TaskFilters = props => {
                 value={ props.value }
                 onClick={ onFilterClick }>All</Filter>
       </li>
-      <li>
+      <li className="active-filter">
         <Filter type={ FILTER_TYPE.ACTIVE }
                 value={ props.value }
                 onClick={ onFilterClick }>Active</Filter>
@@ -175,6 +179,34 @@ TaskFilters.propTypes = {
   onFilterChanged: React.PropTypes.func.isRequired,
   value: React.PropTypes.string.isRequired
 };
+
+const tourSteps = [{
+    title: 'Add new task component',
+    text: 'This is the TaskInput component',
+    selector: '.new-todo',
+    position: 'top',
+    type: 'hover'
+  }, {
+    title: 'Exisiting task component',
+    text: 'This is a Task component',
+    selector: '.task-0',
+    position: 'right',
+    type: 'hover'
+
+  }, {
+    title: 'Filters component',
+    text: 'This is a TaskFilters component',
+    selector: '.filters',
+    position: 'left',
+    type: 'hover'
+  }, {
+    title: 'A filter component',
+    text: 'This is a Filter component',
+    selector: '.active-filter',
+    position: 'bottom',
+    type: 'hover'
+  }
+];
 
 class App extends Component {
   constructor() {
@@ -204,22 +236,13 @@ class App extends Component {
               <TaskInput onTaskEntered={this._onNewTask}
                          value=""
                          className="new-todo" />
-            <Joyride run={ true }
-                     steps={[{
-                       title: 'Trigger Action',
-                       text: 'This is the TaskInput component',
-                       selector: '.new-todo',
-                       position: 'top',
-                       type: 'hover',
-                     }]}
-            />
             </header>
             <section className="main" style={{ display: "block" }} >
               <ul className="todo-list">
                 {
                   this.state.tasks
                     .filter(this._byFilterType)
-                    .map(task =>
+                    .map((task, idx) =>
                       <li key={task.id}
                           className={ task.isCompleted ? "completed" : "" }>
                         <Task id={task.id}
@@ -227,7 +250,8 @@ class App extends Component {
                               isCompleted={task.isCompleted}
                               onTaskChanged={this._onTaskChanged}
                               onTaskCompleted={this._onTaskCompleted}
-                              onTaskDeleted={this._onTaskDeleted} />
+                              onTaskDeleted={this._onTaskDeleted}
+                              className={ "task-" + idx } />
                       </li>
                     )
                 }
@@ -239,6 +263,10 @@ class App extends Component {
             </footer>
           </section>
         </Box>
+
+        <Joyride run={ true }
+                 steps={ tourSteps }
+                 type="continuous" />
       </Box>
     );
   }
