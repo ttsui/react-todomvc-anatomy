@@ -72,10 +72,9 @@ class App extends Component {
         </Box>
         <Box>
           <SwitchButton label="Reveal anatomy"
-                        checked={ this.state.showingAnatomy }
+                        defaultChecked={ this.state.showingAnatomy }
                         onChange={ this._toggleShowingAnatomy }/>
-          <Tour run={ this.state.showingAnatomy }
-                onFinished={ this._toggleShowingAnatomy }/>
+          <Tour run={ this.state.showingAnatomy } />
         </Box>
       </Box>
     );
