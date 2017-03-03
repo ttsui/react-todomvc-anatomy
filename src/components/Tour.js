@@ -32,7 +32,7 @@ const tourSteps = [{
             The TaskFilters component contains all the filters.
           </AnatomyCard>,
     selector: ".filters",
-    position: "left",
+    position: "right",
     type: "click"
   }, {
     title: "<Filter />",
