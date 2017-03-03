@@ -45,10 +45,29 @@ const tourSteps = [{
   }
 ];
 
-const Tour = props => (
-  <Joyride run={ true }
-           steps={ tourSteps }
-           type="continuous" />
-);
+class Tour extends React.Component {
+
+  render() {
+    return (
+      <Joyride run={ this.props.run }
+               ref="joyride"
+               steps={ tourSteps }
+               type="continuous"
+               callback={ data => {
+                 if (data.type === "finished") {
+                   this.refs.joyride.reset();
+                   this.props.onFinished();
+                 }
+               }} />
+    );
+  }
+}
+Tour.propTypes = {
+  onFinished: React.PropTypes.func,
+  run: React.PropTypes.bool
+};
+Tour.defaultProps = {
+  run: false
+};
 
 export default Tour

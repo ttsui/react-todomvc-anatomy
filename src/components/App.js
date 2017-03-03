@@ -4,6 +4,8 @@ import TaskInput from "./TaskInput";
 import Task from "./Task";
 import TaskFilters, { FILTER_TYPE } from "./TaskFilters";
 import Tour from "./Tour";
+import SwitchButton from "react-switch-button";
+import 'react-switch-button/dist/react-switch-button.css';
 
 import "../styles/base.css";
 import "../styles/index.css";
@@ -14,6 +16,7 @@ class App extends Component {
     super();
     this.state = {
       filter: FILTER_TYPE.ALL,
+      showingAnatomy: false,
       tasks: [
         { id: 1, description: "Buy Milk", isCompleted: false }
       ]
@@ -25,12 +28,15 @@ class App extends Component {
     this._onTaskChanged = this._onTaskChanged.bind(this);
     this._onTaskCompleted = this._onTaskCompleted.bind(this);
     this._onTaskDeleted = this._onTaskDeleted.bind(this);
+    this._toggleShowingAnatomy = this._toggleShowingAnatomy.bind(this);
   }
 
   render() {
     return (
-      <Box center>
-        <Box minWidth={ 230 } maxWidth={ 550 } flexGrow={ 1 } >
+      <Box center column>
+        <Box minWidth={ 230 }
+             maxWidth={ 550 }
+             width="100%" >
           <section className="todoapp">
             <header className="header">
               <h1 style={{}}>todos</h1>
@@ -64,8 +70,13 @@ class App extends Component {
             </footer>
           </section>
         </Box>
-
-        <Tour />
+        <Box>
+          <SwitchButton label="Reveal anatomy"
+                        checked={ this.state.showingAnatomy }
+                        onChange={ this._toggleShowingAnatomy }/>
+          <Tour run={ this.state.showingAnatomy }
+                onFinished={ this._toggleShowingAnatomy }/>
+        </Box>
       </Box>
     );
   }
@@ -123,7 +134,10 @@ class App extends Component {
     this.setState({
       tasks: this.state.tasks.filter(task => task.id !== id)
     });
+  }
 
+  _toggleShowingAnatomy() {
+    this.setState({ showingAnatomy: !this.state.showingAnatomy });
   }
 }
 
