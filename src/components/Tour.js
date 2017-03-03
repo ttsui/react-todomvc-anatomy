@@ -12,26 +12,26 @@ const tourSteps = [{
     text: "This is the TaskInput component",
     selector: ".new-todo",
     position: "top",
-    type: "hover"
+    type: "click"
   }, {
     title: "Existing task component",
     text: "This is a Task component",
     selector: ".task-0",
     position: "right",
-    type: "hover"
+    type: "click"
 
   }, {
     title: "Filters component",
     text: "This is a TaskFilters component",
     selector: ".filters",
     position: "left",
-    type: "hover"
+    type: "click"
   }, {
     title: "A filter component",
     text: <SyntaxHighlighter language="javascript" style={docco}>{FilterCode}</SyntaxHighlighter>,
     selector: ".active-filter",
     position: "bottom",
-    type: "hover"
+    type: "click"
   }
 ];
 
